@@ -13,7 +13,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-        "https://eyes-gh.vercel.app"
+        "https://eyes-gh.vercel.app",
+        "https://eyes-rag-124669021559.africa-south1.run.app"
           
     ],
     allow_credentials=True,
