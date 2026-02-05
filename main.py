@@ -14,6 +14,8 @@ app.add_middleware(
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "https://eyes-gh.vercel.app",
+        "https://eyes-gh-client.vercel.app/",
+        "https://eyesgh.com/",
         "https://eyes-rag-124669021559.africa-south1.run.app"
           
     ],
