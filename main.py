@@ -16,9 +16,12 @@ app.add_middleware(
         "https://eyes-gh.vercel.app",
         "https://eyes-gh-client.vercel.app/",
         "https://eyesgh.com/",
-        "https://eyes-rag-124669021559.africa-south1.run.app"
+        "https://eyes-rag-124669021559.africa-south1.run.app",
+        
           
     ],
+    # also allow any origin via regex to ensure CORS headers are returned
+    allow_origin_regex=r".*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
