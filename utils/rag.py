@@ -19,10 +19,23 @@ client = Groq(
 
 genai_client = Client(api_key=settings.GOOGLE_API_KEY)
 
-# co = cohere.Client(settings.COHERE_API_KEY)
-index = faiss.read_index(INDEX_FILE)
-with open(CHUNKS_FILE, "rb") as f:
-    chunks = pickle.load(f)
+# Load index and chunks with error handling
+index = None
+chunks = []
+
+def load_index():
+    global index, chunks
+    try:
+        index = faiss.read_index(INDEX_FILE)
+        with open(CHUNKS_FILE, "rb") as f:
+            chunks = pickle.load(f)
+        print(f"✅ Loaded FAISS index with {index.ntotal} vectors, dimension {index.d}")
+    except FileNotFoundError:
+        print("⚠️ Index files not found. Please run doc_ingester.py to build the index.")
+    except Exception as e:
+        print(f"⚠️ Error loading index: {e}")
+
+load_index()
 
 def embed_text(texts):
     resp = genai_client.models.embed_content(
@@ -34,7 +47,18 @@ def embed_text(texts):
     return vec.reshape(1, -1)
 
 def search_index(query, k=10):
+    if index is None:
+        raise RuntimeError("FAISS index not loaded. Please rebuild the index using doc_ingester.py")
+    
     q_vec = embed_text(texts=[query])
+    
+    # Verify dimensions match
+    if q_vec.shape[1] != index.d:
+        raise RuntimeError(
+            f"Dimension mismatch: query embedding has {q_vec.shape[1]} dimensions, "
+            f"but index expects {index.d}. Please rebuild the index using doc_ingester.py"
+        )
+    
     D, I = index.search(q_vec, k)
     return [chunks[i] for i in I[0]]
 
