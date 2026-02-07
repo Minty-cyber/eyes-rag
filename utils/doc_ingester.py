@@ -10,7 +10,7 @@ from core.config import settings
 # Config
 GOOGLE_API_KEY = settings.GOOGLE_API_KEY
 client = genai.Client(api_key=GOOGLE_API_KEY)
-EMBED_MODEL = "text-embedding-005"  # Remove "models/" prefix
+EMBED_MODEL = "text-embedding-001"  # Remove "models/" prefix
 INDEX_FILE = "faiss_index.bin"
 CHUNKS_FILE = "chunks.pkl"
 
